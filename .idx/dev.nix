@@ -1,9 +1,10 @@
 { pkgs, ... }: {
   packages = [
     pkgs.qemu
-    pkgs.virt-manager
-    pkgs.xrdp
-    pkgs.xfce.xfce4-session
+    pkgs.cloud-image-utils
+    pkgs.wget
+    pkgs.nodejs_22
+    pkgs.git
   ];
 
   idx = {
