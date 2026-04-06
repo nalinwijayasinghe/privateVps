@@ -1,14 +1,16 @@
 { pkgs, ... }: {
   packages = [
     pkgs.qemu
-    pkgs.cloud-image-utils
+    pkgs.cloud-utils
     pkgs.wget
-    pkgs.nodejs_22
     pkgs.git
+    pkgs.nodejs_22
+    pkgs.curl
   ];
 
   idx = {
     extensions = [];
+
     workspace = {
       onCreate = {};
       onStart = {};
