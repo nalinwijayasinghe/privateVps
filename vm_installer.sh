@@ -75,7 +75,7 @@ validate_input() {
     return 0
 }
 
-# ✅ FIX: AUTO-INSTALL missing dependencies instead of just erroring out
+# ✅ FIX: AUTO-INSTALL — detects apt / nix-env / dnf / yum
 check_dependencies() {
     local deps=("qemu-system-x86_64" "wget" "cloud-localds" "qemu-img")
     local missing_deps=()
@@ -88,10 +88,35 @@ check_dependencies() {
 
     if [ ${#missing_deps[@]} -ne 0 ]; then
         print_status "WARN" "Missing dependencies: ${missing_deps[*]}"
-        print_status "INFO" "Auto-installing required packages..."
-        apt update -y
-        apt install -y qemu-system cloud-image-utils wget qemu-utils
-        print_status "SUCCESS" "Dependencies installed successfully!"
+        print_status "INFO" "Detecting package manager and installing..."
+
+        if command -v apt &> /dev/null; then
+            # Debian / Ubuntu
+            apt update -y
+            apt install -y qemu-system cloud-image-utils wget qemu-utils
+            print_status "SUCCESS" "Installed via apt."
+
+        elif command -v nix-env &> /dev/null; then
+            # NixOS / Google IDX
+            print_status "INFO" "NixOS detected (Google IDX environment)."
+            nix-env -iA nixpkgs.qemu nixpkgs.wget nixpkgs.cloud-image-utils
+            print_status "SUCCESS" "Installed via nix-env."
+
+        elif command -v dnf &> /dev/null; then
+            # Fedora / RHEL / CentOS
+            dnf install -y qemu-system-x86 cloud-utils wget qemu-img
+            print_status "SUCCESS" "Installed via dnf."
+
+        elif command -v yum &> /dev/null; then
+            # Older CentOS / RHEL
+            yum install -y qemu-system-x86 cloud-utils wget qemu-img
+            print_status "SUCCESS" "Installed via yum."
+
+        else
+            print_status "ERROR" "No supported package manager found (apt / nix-env / dnf / yum)."
+            print_status "INFO" "Please install manually: qemu-system cloud-image-utils wget qemu-utils"
+            exit 1
+        fi
     else
         print_status "INFO" "All dependencies are present."
     fi
