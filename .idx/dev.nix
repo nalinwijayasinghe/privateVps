@@ -1,19 +1,34 @@
 { pkgs, ... }: {
-  packages = [
-    pkgs.qemu
-    pkgs.cloud-utils
-    pkgs.wget
-    pkgs.git
-    pkgs.nodejs_22
-    pkgs.curl
+  channel = "stable-24.05";
+
+  packages = with pkgs; [
+    unzip
+    openssh
+    git
+    qemu_kvm
+    sudo
+    cdrkit
+    cloud-utils
+    qemu
   ];
 
+  env = {
+    EDITOR = "nano";
+  };
+
   idx = {
-    extensions = [];
+    extensions = [
+      "Dart-Code.flutter"
+      "Dart-Code.dart-code"
+    ];
 
     workspace = {
-      onCreate = {};
-      onStart = {};
+      onCreate = { };
+      onStart = { };
+    };
+
+    previews = {
+      enable = false;
     };
   };
 }
