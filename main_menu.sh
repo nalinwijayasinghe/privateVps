@@ -17,8 +17,8 @@ N=$'\033[0m'   # Reset
 # ==========================================
 #  ✏️  SET YOUR GITHUB DETAILS HERE
 # ==========================================
-GITHUB_USER="YOUR_USERNAME"
-GITHUB_REPO="YOUR_REPO"
+GITHUB_USER="nalinwijayasinghe"
+GITHUB_REPO="privateVps"
 GITHUB_BRANCH="main"
 RAW="https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/refs/heads/${GITHUB_BRANCH}"
 # ==========================================
